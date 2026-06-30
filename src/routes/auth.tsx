@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Sign in — NGO Learning Centre" },
+      { title: "Sign in — Humankind" },
       { name: "description", content: "Sign in to manage student portfolios." },
     ],
   }),
@@ -69,7 +69,7 @@ function AuthPage() {
       <div style={{ width: "100%", maxWidth: 400 }}>
         <div style={{ textAlign: "center", marginBottom: 24 }}>
           <div style={{ fontSize: 36, marginBottom: 8 }}>📚</div>
-          <div style={{ fontSize: 22, fontWeight: 800, color: "#1e3a5f" }}>NGO Learning Centre</div>
+          <div style={{ fontSize: 22, fontWeight: 800, color: "#1e3a5f" }}>Humankind</div>
           <div style={{ fontSize: 13, color: "#64748b", marginTop: 4 }}>Student Portfolio System</div>
         </div>
         <div style={{ background: "#fff", borderRadius: 14, padding: 24, boxShadow: "0 4px 20px rgba(0,0,0,0.08)" }}>

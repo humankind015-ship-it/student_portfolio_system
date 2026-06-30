@@ -7,7 +7,7 @@ import {
 } from "@/lib/grade-levels";
 
 export const Route = createFileRoute("/_authenticated/app")({
-  head: () => ({ meta: [{ title: "Student Portfolios — NGO Learning Centre" }] }),
+  head: () => ({ meta: [{ title: "Student Portfolios — Humankind" }] }),
   component: AppPage,
 });
 
@@ -41,7 +41,7 @@ type Note = {
 
 const ROLE_C: Record<AppRole, { bg: string; text: string; border: string }> = {
   head:        { bg:"#fdf2f8", text:"#9d174d", border:"#f9a8d4" },
-  coordinator: { bg:"#eff6ff", text:"#1d4ed8", border:"#93c5fd" },
+  coordinator: { bg:"#eff6ff", text:"#1d4ed8", border:"#8cc63f" },
   intern:      { bg:"#f0fdf4", text:"#15803d", border:"#86efac" },
 };
 const RoleBadge = ({ role }: { role: AppRole }) => {
@@ -49,7 +49,7 @@ const RoleBadge = ({ role }: { role: AppRole }) => {
   return <span style={{ fontSize:10, padding:"2px 8px", borderRadius:20, background:c.bg, color:c.text, border:`1px solid ${c.border}`, fontWeight:700, textTransform:"uppercase", letterSpacing:0.5 }}>{role}</span>;
 };
 const Toast = ({ toast }: { toast: { msg: string; type?: string } }) => (
-  <div style={{ position:"fixed", top:16, left:"50%", transform:"translateX(-50%)", zIndex:9999, background:toast.type==="error"?"#dc2626":"#1e3a5f", color:"#fff", padding:"10px 20px", borderRadius:8, fontSize:13, fontWeight:600, boxShadow:"0 4px 14px rgba(0,0,0,0.2)", whiteSpace:"nowrap" }}>
+  <div style={{ position:"fixed", top:16, left:"50%", transform:"translateX(-50%)", zIndex:9999, background:toast.type==="error"?"#dc2626":"#1e5a9c", color:"#fff", padding:"10px 20px", borderRadius:8, fontSize:13, fontWeight:600, boxShadow:"0 4px 14px rgba(0,0,0,0.2)", whiteSpace:"nowrap" }}>
     {toast.msg}
   </div>
 );
@@ -215,17 +215,17 @@ function AppPage() {
     return (
       <div style={{ minHeight: "100vh", background: "#f0f4f8", ...F }}>
         {toast && <Toast toast={toast} />}
-        <div style={{ background:"#1e3a5f", padding:"16px 20px" }}>
+        <div style={{ background:"#1e5a9c", padding:"16px 20px" }}>
           <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
             <div>
-              <div style={{ color:"#93c5fd", fontSize:11, fontWeight:600, letterSpacing:2, textTransform:"uppercase" }}>NGO Learning Centre</div>
+              <div style={{ color:"#8cc63f", fontSize:11, fontWeight:600, letterSpacing:2, textTransform:"uppercase" }}>Humankind</div>
               <div style={{ color:"#fff", fontSize:20, fontWeight:800, marginTop:2 }}>Student Portfolios</div>
             </div>
             <div style={{ textAlign:"right" }}>
               <div style={{ color:"#e2e8f0", fontSize:13, fontWeight:600 }}>{user.name}</div>
               <div style={{ display:"flex", gap:8, alignItems:"center", marginTop:4, justifyContent:"flex-end" }}>
                 <RoleBadge role={user.role} />
-                <button onClick={logout} style={{ background:"none", border:"none", color:"#93c5fd", fontSize:11, cursor:"pointer", padding:0 }}>Sign out</button>
+                <button onClick={logout} style={{ background:"none", border:"none", color:"#8cc63f", fontSize:11, cursor:"pointer", padding:0 }}>Sign out</button>
               </div>
             </div>
           </div>
@@ -238,7 +238,7 @@ function AppPage() {
               { label:"First-Gen", value: students.filter(s => s.first_gen_learner === "Yes").length },
             ].map(stat => (
               <div key={stat.label} style={{ background:"#fff", borderRadius:10, padding:"12px 14px", border:"1px solid #e2e8f0" }}>
-                <div style={{ fontSize:22, fontWeight:800, color:"#1e3a5f" }}>{stat.value}</div>
+                <div style={{ fontSize:22, fontWeight:800, color:"#1e5a9c" }}>{stat.value}</div>
                 <div style={{ fontSize:11, color:"#64748b", marginTop:1 }}>{stat.label}</div>
               </div>
             ))}
@@ -247,7 +247,7 @@ function AppPage() {
             <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search students…"
               style={{ flex:1, padding:"10px 13px", borderRadius:8, border:"1px solid #cbd5e1", fontSize:14 }} />
             {canEdit(user.role) && (
-              <button onClick={startNew} style={{ background:"#1e3a5f", color:"#fff", border:"none", borderRadius:8, padding:"10px 16px", fontWeight:700, fontSize:13, cursor:"pointer" }}>+ Add</button>
+              <button onClick={startNew} style={{ background:"#1e5a9c", color:"#fff", border:"none", borderRadius:8, padding:"10px 16px", fontWeight:700, fontSize:13, cursor:"pointer" }}>+ Add</button>
             )}
           </div>
           <div style={{ fontSize:11, color:"#64748b", background:"#fff", borderRadius:8, padding:"8px 12px", border:"1px solid #e2e8f0", marginBottom:14 }}>
@@ -270,7 +270,7 @@ function AppPage() {
                 return (
                   <div key={s.id} onClick={() => openStudent(s)}
                     style={{ background:"#fff", borderRadius:10, border:"1px solid #e2e8f0", padding:"14px 16px", cursor:"pointer", display:"flex", alignItems:"center", gap:14 }}>
-                    <div style={{ width:42, height:42, borderRadius:"50%", background:"#dbeafe", display:"flex", alignItems:"center", justifyContent:"center", fontWeight:800, fontSize:16, color:"#1e3a5f", flexShrink:0 }}>
+                    <div style={{ width:42, height:42, borderRadius:"50%", background:"#dbeafe", display:"flex", alignItems:"center", justifyContent:"center", fontWeight:800, fontSize:16, color:"#1e5a9c", flexShrink:0 }}>
                       {s.name ? s.name[0].toUpperCase() : "?"}
                     </div>
                     <div style={{ flex:1, minWidth:0 }}>
@@ -308,11 +308,11 @@ function AppPage() {
     return (
       <div style={{ minHeight:"100vh", background:"#f0f4f8", ...F }}>
         {toast && <Toast toast={toast} />}
-        <div style={{ background:"#1e3a5f", padding:"14px 20px" }}>
+        <div style={{ background:"#1e5a9c", padding:"14px 20px" }}>
           <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:10 }}>
-            <button onClick={() => setView("home")} style={{ background:"none", border:"none", color:"#93c5fd", fontSize:22, cursor:"pointer", padding:0 }}>←</button>
+            <button onClick={() => setView("home")} style={{ background:"none", border:"none", color:"#8cc63f", fontSize:22, cursor:"pointer", padding:0 }}>←</button>
             <div style={{ flex:1 }}>
-              <div style={{ color:"#93c5fd", fontSize:10, fontWeight:600, letterSpacing:1.5, textTransform:"uppercase" }}>Student Portfolio</div>
+              <div style={{ color:"#8cc63f", fontSize:10, fontWeight:600, letterSpacing:1.5, textTransform:"uppercase" }}>Student Portfolio</div>
               <div style={{ color:"#fff", fontWeight:800, fontSize:19 }}>{s.name}</div>
             </div>
             {canEdit(user.role) && (
@@ -329,7 +329,7 @@ function AppPage() {
         <div style={{ display:"flex", background:"#fff", borderBottom:"2px solid #e2e8f0" }}>
           {(["overview", "academic", "notes"] as const).map(t => (
             <button key={t} onClick={() => setTab(t)}
-              style={{ flex:1, padding:"11px 4px", background:"none", border:"none", borderBottom: tab === t ? "2px solid #1e3a5f" : "2px solid transparent", marginBottom:-2, fontWeight: tab === t ? 700 : 400, color: tab === t ? "#1e3a5f" : "#64748b", fontSize:12, cursor:"pointer" }}>
+              style={{ flex:1, padding:"11px 4px", background:"none", border:"none", borderBottom: tab === t ? "2px solid #1e5a9c" : "2px solid transparent", marginBottom:-2, fontWeight: tab === t ? 700 : 400, color: tab === t ? "#1e5a9c" : "#64748b", fontSize:12, cursor:"pointer" }}>
               {t === "notes" ? `Notes (${notes.length})` : t.charAt(0).toUpperCase() + t.slice(1)}
             </button>
           ))}
@@ -339,7 +339,7 @@ function AppPage() {
           {tab === "overview" && (
             <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
               <div style={{ background:"#fff", borderRadius:10, border:"1px solid #e2e8f0", padding:16 }}>
-                <div style={{ fontWeight:700, fontSize:13, color:"#1e3a5f", marginBottom:4 }}>Academic Snapshot</div>
+                <div style={{ fontWeight:700, fontSize:13, color:"#1e5a9c", marginBottom:4 }}>Academic Snapshot</div>
                 {!gl ? (
                   <div style={{ fontSize:12, color:"#94a3b8", padding:"10px 0" }}>Grade not set yet.</div>
                 ) : (
@@ -373,7 +373,7 @@ function AppPage() {
               </div>
 
               <div style={{ background:"#fff", borderRadius:10, border:"1px solid #e2e8f0", padding:16 }}>
-                <div style={{ fontWeight:700, fontSize:13, color:"#1e3a5f", marginBottom:10 }}>Background</div>
+                <div style={{ fontWeight:700, fontSize:13, color:"#1e5a9c", marginBottom:10 }}>Background</div>
                 {([
                   ["School", s.school],
                   ["Community", s.community],
@@ -395,7 +395,7 @@ function AppPage() {
                 const n = notes[notes.length - 1];
                 return (
                   <div style={{ background:"#fff", borderRadius:10, border:"1px solid #e2e8f0", padding:16 }}>
-                    <div style={{ fontWeight:700, fontSize:13, color:"#1e3a5f", marginBottom:8 }}>Latest Note</div>
+                    <div style={{ fontWeight:700, fontSize:13, color:"#1e5a9c", marginBottom:8 }}>Latest Note</div>
                     <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:8 }}>
                       <span style={{ fontSize:12, fontWeight:600, color:"#334155" }}>{n.author_name}</span>
                       <div style={{ display:"flex", gap:6, alignItems:"center" }}>
@@ -437,12 +437,12 @@ function AppPage() {
                     const selected = localLevels[sub] || null;
                     return (
                       <div key={sub} style={{ background:"#fff", borderRadius:10, border:"1px solid #e2e8f0", padding:14 }}>
-                        <div style={{ fontWeight:700, fontSize:14, color:"#1e3a5f", marginBottom:10 }}>{sub}</div>
+                        <div style={{ fontWeight:700, fontSize:14, color:"#1e5a9c", marginBottom:10 }}>{sub}</div>
                         <div style={{ display:"flex", flexDirection:"column", gap:5 }}>
                           {levels.map(lvl => (
                             <button key={lvl.id} onClick={() => setLocalLevels({ ...localLevels, [sub]: lvl.id })}
-                              style={{ padding:"9px 12px", borderRadius:8, border: selected === lvl.id ? "2px solid #1e3a5f" : "1px solid #e2e8f0", background: selected === lvl.id ? "#eff6ff" : "#fafafa", fontWeight: selected === lvl.id ? 700 : 400, color: selected === lvl.id ? "#1e3a5f" : "#475569", cursor:"pointer", fontSize:12, textAlign:"left", display:"flex", gap:8, alignItems:"center" }}>
-                              <span style={{ width:20, height:20, borderRadius:"50%", background: selected === lvl.id ? "#1e3a5f" : "#e2e8f0", color: selected === lvl.id ? "#fff" : "#64748b", display:"flex", alignItems:"center", justifyContent:"center", fontSize:10, fontWeight:700, flexShrink:0 }}>
+                              style={{ padding:"9px 12px", borderRadius:8, border: selected === lvl.id ? "2px solid #1e5a9c" : "1px solid #e2e8f0", background: selected === lvl.id ? "#eff6ff" : "#fafafa", fontWeight: selected === lvl.id ? 700 : 400, color: selected === lvl.id ? "#1e5a9c" : "#475569", cursor:"pointer", fontSize:12, textAlign:"left", display:"flex", gap:8, alignItems:"center" }}>
+                              <span style={{ width:20, height:20, borderRadius:"50%", background: selected === lvl.id ? "#1e5a9c" : "#e2e8f0", color: selected === lvl.id ? "#fff" : "#64748b", display:"flex", alignItems:"center", justifyContent:"center", fontSize:10, fontWeight:700, flexShrink:0 }}>
                                 {selected === lvl.id ? "✓" : ""}
                               </span>
                               <span style={{ flex:1 }}>{lvl.label}</span>
@@ -453,7 +453,7 @@ function AppPage() {
                       </div>
                     );
                   })}
-                  <button onClick={() => saveLevels(s.id)} style={{ background:"#1e3a5f", color:"#fff", border:"none", borderRadius:8, padding:13, fontWeight:700, fontSize:15, cursor:"pointer" }}>
+                  <button onClick={() => saveLevels(s.id)} style={{ background:"#1e5a9c", color:"#fff", border:"none", borderRadius:8, padding:13, fontWeight:700, fontSize:15, cursor:"pointer" }}>
                     Save Academic Levels
                   </button>
                 </>
@@ -485,8 +485,8 @@ function AppPage() {
                   <div style={{ fontSize:12, color:"#475569", lineHeight:1.65 }}>{note.observation}</div>
                 </div>
               ))}
-              <div style={{ background:"#fff", borderRadius:10, border:"2px solid #1e3a5f", padding:16 }}>
-                <div style={{ fontWeight:700, fontSize:13, color:"#1e3a5f", marginBottom:10 }}>Add a Note — {user.name}</div>
+              <div style={{ background:"#fff", borderRadius:10, border:"2px solid #1e5a9c", padding:16 }}>
+                <div style={{ fontWeight:700, fontSize:13, color:"#1e5a9c", marginBottom:10 }}>Add a Note — {user.name}</div>
                 <div style={{ fontSize:11, color:"#64748b", background:"#fef9c3", padding:"7px 10px", borderRadius:6, marginBottom:12 }}>⚠️ Once saved, this note is permanent and cannot be edited or deleted.</div>
                 <div style={{ marginBottom:10 }}>
                   <label style={{ fontSize:11, fontWeight:600, color:"#475569", display:"block", marginBottom:4 }}>Focus Areas for Next Session</label>
@@ -498,7 +498,7 @@ function AppPage() {
                   <textarea rows={4} value={newNote.observation} onChange={e => setNewNote({ ...newNote, observation: e.target.value })} placeholder="What did the student do well? What was difficult? Learning style, behaviour, home situation, what worked…"
                     style={{ width:"100%", padding:"9px 11px", borderRadius:8, border:"1px solid #cbd5e1", fontSize:13, boxSizing:"border-box", resize:"none" }} />
                 </div>
-                <button onClick={() => submitNote(s.id)} style={{ width:"100%", background:"#1e3a5f", color:"#fff", border:"none", borderRadius:8, padding:12, fontWeight:700, fontSize:14, cursor:"pointer" }}>
+                <button onClick={() => submitNote(s.id)} style={{ width:"100%", background:"#1e5a9c", color:"#fff", border:"none", borderRadius:8, padding:12, fontWeight:700, fontSize:14, cursor:"pointer" }}>
                   Save Note Permanently
                 </button>
               </div>
@@ -515,8 +515,8 @@ function AppPage() {
     return (
       <div style={{ minHeight:"100vh", background:"#f0f4f8", ...F }}>
         {toast && <Toast toast={toast} />}
-        <div style={{ background:"#1e3a5f", padding:"14px 20px", display:"flex", alignItems:"center", gap:12 }}>
-          <button onClick={() => setView(editIsNew ? "home" : "detail")} style={{ background:"none", border:"none", color:"#93c5fd", fontSize:22, cursor:"pointer", padding:0 }}>←</button>
+        <div style={{ background:"#1e5a9c", padding:"14px 20px", display:"flex", alignItems:"center", gap:12 }}>
+          <button onClick={() => setView(editIsNew ? "home" : "detail")} style={{ background:"none", border:"none", color:"#8cc63f", fontSize:22, cursor:"pointer", padding:0 }}>←</button>
           <div style={{ color:"#fff", fontWeight:800, fontSize:18 }}>{editIsNew ? "New Student" : `Edit: ${editForm.name || ""}`}</div>
         </div>
         <div style={{ padding:"18px 20px 80px", display:"flex", flexDirection:"column", gap:14 }}>
@@ -538,7 +538,7 @@ function AppPage() {
             <div style={{ display:"flex", gap:8 }}>
               {["Male","Female","Other"].map(g => (
                 <button key={g} onClick={() => upd("gender", g)}
-                  style={{ flex:1, padding:"9px 0", borderRadius:8, border: editForm.gender === g ? "2px solid #1e3a5f" : "1px solid #cbd5e1", background: editForm.gender === g ? "#eff6ff" : "#fff", fontWeight: editForm.gender === g ? 700 : 400, color: editForm.gender === g ? "#1e3a5f" : "#475569", cursor:"pointer", fontSize:13 }}>
+                  style={{ flex:1, padding:"9px 0", borderRadius:8, border: editForm.gender === g ? "2px solid #1e5a9c" : "1px solid #cbd5e1", background: editForm.gender === g ? "#eff6ff" : "#fff", fontWeight: editForm.gender === g ? 700 : 400, color: editForm.gender === g ? "#1e5a9c" : "#475569", cursor:"pointer", fontSize:13 }}>
                   {g}
                 </button>
               ))}
@@ -570,7 +570,7 @@ function AppPage() {
             <div style={{ display:"flex", gap:8 }}>
               {["Yes","No","Unsure"].map(opt => (
                 <button key={opt} onClick={() => upd("first_gen_learner", opt)}
-                  style={{ flex:1, padding:"9px 0", borderRadius:8, border: editForm.first_gen_learner === opt ? "2px solid #1e3a5f" : "1px solid #cbd5e1", background: editForm.first_gen_learner === opt ? "#eff6ff" : "#fff", fontWeight: editForm.first_gen_learner === opt ? 700 : 400, color: editForm.first_gen_learner === opt ? "#1e3a5f" : "#475569", cursor:"pointer", fontSize:13 }}>
+                  style={{ flex:1, padding:"9px 0", borderRadius:8, border: editForm.first_gen_learner === opt ? "2px solid #1e5a9c" : "1px solid #cbd5e1", background: editForm.first_gen_learner === opt ? "#eff6ff" : "#fff", fontWeight: editForm.first_gen_learner === opt ? 700 : 400, color: editForm.first_gen_learner === opt ? "#1e5a9c" : "#475569", cursor:"pointer", fontSize:13 }}>
                   {opt}
                 </button>
               ))}
@@ -581,7 +581,7 @@ function AppPage() {
             <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
               {["Regular (>80%)","Moderate (50–80%)","Irregular (<50%)"].map(opt => (
                 <button key={opt} onClick={() => upd("attendance", opt)}
-                  style={{ padding:"10px 14px", borderRadius:8, border: editForm.attendance === opt ? "2px solid #1e3a5f" : "1px solid #cbd5e1", background: editForm.attendance === opt ? "#eff6ff" : "#fff", fontWeight: editForm.attendance === opt ? 600 : 400, color: editForm.attendance === opt ? "#1e3a5f" : "#475569", cursor:"pointer", fontSize:13, textAlign:"left" }}>
+                  style={{ padding:"10px 14px", borderRadius:8, border: editForm.attendance === opt ? "2px solid #1e5a9c" : "1px solid #cbd5e1", background: editForm.attendance === opt ? "#eff6ff" : "#fff", fontWeight: editForm.attendance === opt ? 600 : 400, color: editForm.attendance === opt ? "#1e5a9c" : "#475569", cursor:"pointer", fontSize:13, textAlign:"left" }}>
                   {opt}
                 </button>
               ))}
