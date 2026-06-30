@@ -121,6 +121,15 @@ function AuthPage() {
             style={{ width: "100%", background: BRAND, color: "#fff", border: "none", borderRadius: 8, padding: 13, fontWeight: 700, fontSize: 15, cursor: busy ? "default" : "pointer", opacity: busy ? 0.6 : 1 }}>
             {busy ? "Please wait…" : mode === "signin" ? "Sign In" : "Create Account"}
           </button>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, margin: "16px 0", color: "#94a3b8", fontSize: 11 }}>
+            <div style={{ flex: 1, height: 1, background: "#e2e8f0" }} /> OR <div style={{ flex: 1, height: 1, background: "#e2e8f0" }} />
+          </div>
+          <button onClick={googleSignIn} disabled={busy}
+            style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, background: "#fff", color: "#334155", border: "1px solid #cbd5e1", borderRadius: 8, padding: 12, fontWeight: 600, fontSize: 14, cursor: busy ? "default" : "pointer", opacity: busy ? 0.6 : 1 }}>
+            <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19 13 24 13c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.3 35 26.8 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.6 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.1 5.6l6.2 5.2C41.8 35.2 44 30 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>
+            Continue with Google
+          </button>
+
           {mode === "signup" && (
             <div style={{ marginTop: 14, padding: 10, background: "#f8fafc", borderRadius: 8, fontSize: 11, color: "#64748b", lineHeight: 1.5, borderLeft: `3px solid ${ACCENT}` }}>
               The first person to sign up becomes the <strong>Head</strong>. All later signups start as <strong>Intern</strong>; the Head can promote roles later.
