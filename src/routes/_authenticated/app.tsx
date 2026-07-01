@@ -5,6 +5,7 @@ import { useCurrentUser, canEdit, canDelete, type AppRole } from "@/hooks/use-cu
 import {
   GRADES, LANGUAGES, getGL, getLevelColor, getLevelLabel, type Level,
 } from "@/lib/grade-levels";
+import logoAsset from "@/assets/humankind-logo.asset.json";
 
 export const Route = createFileRoute("/_authenticated/app")({
   head: () => ({ meta: [{ title: "Student Portfolios — Humankind" }] }),
@@ -12,6 +13,7 @@ export const Route = createFileRoute("/_authenticated/app")({
 });
 
 const F = { fontFamily: "'Segoe UI',system-ui,sans-serif" } as const;
+
 
 type Student = {
   id: string;
