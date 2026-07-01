@@ -221,20 +221,27 @@ function AppPage() {
       <div style={{ minHeight: "100vh", background: "#f0f4f8", ...F }}>
         {toast && <Toast toast={toast} />}
         <div style={{ background:"#1e5a9c", padding:"16px 20px" }}>
-          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
-            <div>
-              <div style={{ color:"#8cc63f", fontSize:11, fontWeight:600, letterSpacing:2, textTransform:"uppercase" }}>Humankind</div>
-              <div style={{ color:"#fff", fontSize:20, fontWeight:800, marginTop:2 }}>Student Portfolios</div>
+          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", gap:12 }}>
+            <div style={{ display:"flex", alignItems:"center", gap:12, minWidth:0 }}>
+              <img src={logoAsset.url} alt="Humankind" style={{ height:38, width:38, borderRadius:8, background:"#fff", padding:3, objectFit:"contain", flexShrink:0 }} />
+              <div style={{ minWidth:0 }}>
+                <div style={{ color:"#8cc63f", fontSize:11, fontWeight:600, letterSpacing:2, textTransform:"uppercase" }}>Humankind</div>
+                <div style={{ color:"#fff", fontSize:20, fontWeight:800, marginTop:2 }}>Student Portfolios</div>
+              </div>
             </div>
-            <div style={{ textAlign:"right" }}>
+            <div style={{ textAlign:"right", flexShrink:0 }}>
               <div style={{ color:"#e2e8f0", fontSize:13, fontWeight:600 }}>{user.name}</div>
-              <div style={{ display:"flex", gap:8, alignItems:"center", marginTop:4, justifyContent:"flex-end" }}>
+              <div style={{ display:"flex", gap:8, alignItems:"center", marginTop:4, justifyContent:"flex-end", flexWrap:"wrap" }}>
                 <RoleBadge role={user.role} />
+                {user.role === "head" && (
+                  <button onClick={() => setView("team")} style={{ background:"rgba(255,255,255,0.15)", border:"none", color:"#fff", fontSize:11, cursor:"pointer", padding:"3px 9px", borderRadius:6, fontWeight:600 }}>Team</button>
+                )}
                 <button onClick={logout} style={{ background:"none", border:"none", color:"#8cc63f", fontSize:11, cursor:"pointer", padding:0 }}>Sign out</button>
               </div>
             </div>
           </div>
         </div>
+
         <div style={{ padding:"16px 20px" }}>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:10, marginBottom:16 }}>
             {[
