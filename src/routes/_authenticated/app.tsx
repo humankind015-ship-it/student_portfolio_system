@@ -59,7 +59,10 @@ const Toast = ({ toast }: { toast: { msg: string; type?: string } }) => (
 const fmtDate = (iso: string) =>
   new Date(iso).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
 
-type View = "home" | "detail" | "form";
+type View = "home" | "detail" | "form" | "team";
+
+type TeamMember = { id: string; full_name: string; role: AppRole };
+
 
 const emptyForm = (): Partial<Student> => ({
   name: "", age: "", gender: "", grade: "", mother_tongue: "",
