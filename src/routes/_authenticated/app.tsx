@@ -5,6 +5,7 @@ import { useCurrentUser, canEdit, canDelete, type AppRole } from "@/hooks/use-cu
 import {
   GRADES, LANGUAGES, getGL, getLevelColor, getLevelLabel, type Level,
 } from "@/lib/grade-levels";
+import logoAsset from "@/assets/humankind-logo.asset.json";
 
 export const Route = createFileRoute("/_authenticated/app")({
   head: () => ({ meta: [{ title: "Student Portfolios — Humankind" }] }),
@@ -12,6 +13,7 @@ export const Route = createFileRoute("/_authenticated/app")({
 });
 
 const F = { fontFamily: "'Segoe UI',system-ui,sans-serif" } as const;
+
 
 type Student = {
   id: string;
@@ -57,7 +59,10 @@ const Toast = ({ toast }: { toast: { msg: string; type?: string } }) => (
 const fmtDate = (iso: string) =>
   new Date(iso).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
 
-type View = "home" | "detail" | "form";
+type View = "home" | "detail" | "form" | "team";
+
+type TeamMember = { id: string; full_name: string; role: AppRole };
+
 
 const emptyForm = (): Partial<Student> => ({
   name: "", age: "", gender: "", grade: "", mother_tongue: "",
@@ -216,20 +221,27 @@ function AppPage() {
       <div style={{ minHeight: "100vh", background: "#f0f4f8", ...F }}>
         {toast && <Toast toast={toast} />}
         <div style={{ background:"#1e5a9c", padding:"16px 20px" }}>
-          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
-            <div>
-              <div style={{ color:"#8cc63f", fontSize:11, fontWeight:600, letterSpacing:2, textTransform:"uppercase" }}>Humankind</div>
-              <div style={{ color:"#fff", fontSize:20, fontWeight:800, marginTop:2 }}>Student Portfolios</div>
+          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", gap:12 }}>
+            <div style={{ display:"flex", alignItems:"center", gap:12, minWidth:0 }}>
+              <img src={logoAsset.url} alt="Humankind" style={{ height:38, width:38, borderRadius:8, background:"#fff", padding:3, objectFit:"contain", flexShrink:0 }} />
+              <div style={{ minWidth:0 }}>
+                <div style={{ color:"#8cc63f", fontSize:11, fontWeight:600, letterSpacing:2, textTransform:"uppercase" }}>Humankind</div>
+                <div style={{ color:"#fff", fontSize:20, fontWeight:800, marginTop:2 }}>Student Portfolios</div>
+              </div>
             </div>
-            <div style={{ textAlign:"right" }}>
+            <div style={{ textAlign:"right", flexShrink:0 }}>
               <div style={{ color:"#e2e8f0", fontSize:13, fontWeight:600 }}>{user.name}</div>
-              <div style={{ display:"flex", gap:8, alignItems:"center", marginTop:4, justifyContent:"flex-end" }}>
+              <div style={{ display:"flex", gap:8, alignItems:"center", marginTop:4, justifyContent:"flex-end", flexWrap:"wrap" }}>
                 <RoleBadge role={user.role} />
+                {user.role === "head" && (
+                  <button onClick={() => setView("team")} style={{ background:"rgba(255,255,255,0.15)", border:"none", color:"#fff", fontSize:11, cursor:"pointer", padding:"3px 9px", borderRadius:6, fontWeight:600 }}>Team</button>
+                )}
                 <button onClick={logout} style={{ background:"none", border:"none", color:"#8cc63f", fontSize:11, cursor:"pointer", padding:0 }}>Sign out</button>
               </div>
             </div>
           </div>
         </div>
+
         <div style={{ padding:"16px 20px" }}>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:10, marginBottom:16 }}>
             {[
@@ -601,5 +613,123 @@ function AppPage() {
     );
   }
 
+  if (view === "team" && user.role === "head") {
+    return <TeamScreen onBack={() => setView("home")} flash={flash} toast={toast} currentUserId={user.id} />;
+  }
+
   return null;
 }
+
+function TeamScreen({ onBack, flash, toast, currentUserId }: {
+  onBack: () => void;
+  flash: (msg: string, type?: "success" | "error") => void;
+  toast: { msg: string; type?: string } | null;
+  currentUserId: string;
+}) {
+  const [members, setMembers] = useState<TeamMember[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [savingId, setSavingId] = useState<string | null>(null);
+
+  const load = async () => {
+    setLoading(true);
+    const [{ data: profiles }, { data: roles }] = await Promise.all([
+      supabase.from("profiles").select("id, full_name"),
+      supabase.from("user_roles").select("user_id, role"),
+    ]);
+    const roleMap = new Map<string, AppRole>();
+    (roles || []).forEach((r: any) => roleMap.set(r.user_id, r.role));
+    const list: TeamMember[] = (profiles || []).map((p: any) => ({
+      id: p.id, full_name: p.full_name || "(no name)", role: roleMap.get(p.id) || "intern",
+    }));
+    list.sort((a, b) => a.full_name.localeCompare(b.full_name));
+    setMembers(list);
+    setLoading(false);
+  };
+
+  useEffect(() => { load(); }, []);
+
+  const changeRole = async (userId: string, newRole: AppRole) => {
+    if (userId === currentUserId) { flash("You cannot change your own role.", "error"); return; }
+    setSavingId(userId);
+    // (user_id, role) is unique — safest path is delete then insert.
+    const del = await supabase.from("user_roles").delete().eq("user_id", userId);
+    if (del.error) { flash(del.error.message, "error"); setSavingId(null); return; }
+    const ins = await supabase.from("user_roles").insert({ user_id: userId, role: newRole });
+    if (ins.error) { flash(ins.error.message, "error"); setSavingId(null); return; }
+    await load();
+    setSavingId(null);
+    flash("Role updated.");
+  };
+
+  const counts = useMemo(() => ({
+    head: members.filter(m => m.role === "head").length,
+    coordinator: members.filter(m => m.role === "coordinator").length,
+    intern: members.filter(m => m.role === "intern").length,
+  }), [members]);
+
+  return (
+    <div style={{ minHeight:"100vh", background:"#f0f4f8", ...F }}>
+      {toast && <Toast toast={toast} />}
+      <div style={{ background:"#1e5a9c", padding:"14px 20px", display:"flex", alignItems:"center", gap:12 }}>
+        <button onClick={onBack} style={{ background:"none", border:"none", color:"#8cc63f", fontSize:22, cursor:"pointer", padding:0 }}>←</button>
+        <div style={{ flex:1 }}>
+          <div style={{ color:"#8cc63f", fontSize:10, fontWeight:600, letterSpacing:1.5, textTransform:"uppercase" }}>Head Only</div>
+          <div style={{ color:"#fff", fontWeight:800, fontSize:19 }}>Team & Roles</div>
+        </div>
+      </div>
+
+      <div style={{ padding:"16px 20px" }}>
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:10, marginBottom:16 }}>
+          {(["head","coordinator","intern"] as const).map(r => (
+            <div key={r} style={{ background:"#fff", borderRadius:10, padding:"12px 14px", border:"1px solid #e2e8f0" }}>
+              <div style={{ fontSize:22, fontWeight:800, color:"#1e5a9c" }}>{counts[r]}</div>
+              <div style={{ fontSize:11, color:"#64748b", marginTop:1, textTransform:"capitalize" }}>{r}s</div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ fontSize:11, color:"#64748b", background:"#fff", borderRadius:8, padding:"8px 12px", border:"1px solid #e2e8f0", marginBottom:14, borderLeft:"3px solid #8cc63f" }}>
+          Change any member's role using the dropdown. You cannot change your own role — ask another Head to do it.
+        </div>
+
+        {loading ? (
+          <div style={{ textAlign:"center", padding:30, color:"#64748b", fontSize:13 }}>Loading team…</div>
+        ) : (
+          <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+            {members.map(m => {
+              const isSelf = m.id === currentUserId;
+              return (
+                <div key={m.id} style={{ background:"#fff", borderRadius:10, border:"1px solid #e2e8f0", padding:"14px 16px", display:"flex", alignItems:"center", gap:14 }}>
+                  <div style={{ width:42, height:42, borderRadius:"50%", background:"#dbeafe", display:"flex", alignItems:"center", justifyContent:"center", fontWeight:800, fontSize:16, color:"#1e5a9c", flexShrink:0 }}>
+                    {m.full_name[0]?.toUpperCase() || "?"}
+                  </div>
+                  <div style={{ flex:1, minWidth:0 }}>
+                    <div style={{ fontWeight:700, color:"#1e293b", fontSize:14 }}>
+                      {m.full_name} {isSelf && <span style={{ color:"#8cc63f", fontSize:11, fontWeight:600 }}>(you)</span>}
+                    </div>
+                    <div style={{ marginTop:4 }}><RoleBadge role={m.role} /></div>
+                  </div>
+                  <select
+                    value={m.role}
+                    disabled={isSelf || savingId === m.id}
+                    onChange={e => changeRole(m.id, e.target.value as AppRole)}
+                    style={{ padding:"8px 10px", borderRadius:8, border:"1px solid #cbd5e1", fontSize:13, background: isSelf ? "#f1f5f9" : "#fff", cursor: isSelf ? "not-allowed" : "pointer", fontWeight:600, color:"#1e5a9c" }}>
+                    <option value="head">Head</option>
+                    <option value="coordinator">Coordinator</option>
+                    <option value="intern">Intern</option>
+                  </select>
+                </div>
+              );
+            })}
+            {members.length === 0 && (
+              <div style={{ textAlign:"center", padding:30, color:"#94a3b8", fontSize:13, background:"#fff", borderRadius:10, border:"1px solid #e2e8f0" }}>
+                No members yet.
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+

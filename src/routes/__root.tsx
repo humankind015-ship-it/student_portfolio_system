@@ -77,20 +77,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Humankind — Student Portfolio System" },
+      { name: "description", content: "Humankind NGO student portfolio system for tracking learners, academic levels, and session notes." },
+      { property: "og:title", content: "Humankind — Student Portfolio System" },
+      { property: "og:description", content: "Track students, academic levels, and mentor notes for Humankind's programs." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", type: "image/png", href: "/favicon.png" },
+      { rel: "apple-touch-icon", href: "/favicon.png" },
     ],
   }),
   shellComponent: RootShell,
@@ -116,6 +113,20 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
+  // Auto sign-out when the browser/tab is fully closed.
+  // sessionStorage is cleared when the tab closes, so on next open we
+  // detect the missing marker and force a fresh sign-in.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const KEY = "hk-session-alive";
+    if (!sessionStorage.getItem(KEY)) {
+      import("@/integrations/supabase/client").then(({ supabase }) => {
+        supabase.auth.signOut().catch(() => {});
+      });
+      sessionStorage.setItem(KEY, "1");
+    }
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
@@ -123,3 +134,4 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
+
