@@ -2,7 +2,6 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
-import logoAsset from "@/assets/humankind-logo.asset.json";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -83,7 +82,7 @@ function AuthPage() {
     <div style={{ minHeight: "100vh", background: "#f0f4f8", display: "flex", alignItems: "center", justifyContent: "center", padding: 20, ...F }}>
       <div style={{ width: "100%", maxWidth: 400 }}>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", marginBottom: 24 }}>
-          <img src={logoAsset.url} alt="Humankind" style={{ height: 90, marginBottom: 12, objectFit: "contain", display: "block" }} />
+          <img src="/favicon.png" alt="Humankind" style={{ height: 90, marginBottom: 12, objectFit: "contain", display: "block" }} />
           <div style={{ fontSize: 15, fontWeight: 700, color: BRAND }}>Student Portfolio System</div>
         </div>
         <div style={{ background: "#fff", borderRadius: 14, padding: 24, boxShadow: "0 4px 20px rgba(0,0,0,0.08)" }}>
@@ -130,11 +129,6 @@ function AuthPage() {
             Continue with Google
           </button>
 
-          {mode === "signup" && (
-            <div style={{ marginTop: 14, padding: 10, background: "#f8fafc", borderRadius: 8, fontSize: 11, color: "#64748b", lineHeight: 1.5, borderLeft: `3px solid ${ACCENT}` }}>
-              The first person to sign up becomes the <strong>Head</strong>. All later signups start as <strong>Intern</strong>; the Head can promote roles later.
-            </div>
-          )}
         </div>
         <div style={{ textAlign: "center", marginTop: 16, fontSize: 12, color: "#64748b" }}>
           <Link to="/" style={{ color: BRAND }}>← Back home</Link>
