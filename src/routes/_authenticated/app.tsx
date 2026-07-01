@@ -5,7 +5,7 @@ import { useCurrentUser, canEdit, canDelete, type AppRole } from "@/hooks/use-cu
 import {
   GRADES, LANGUAGES, getGL, getLevelColor, getLevelLabel, type Level,
 } from "@/lib/grade-levels";
-import logoAsset from "@/assets/humankind-logo.asset.json";
+const LOGO_URL = "/favicon.png";
 
 export const Route = createFileRoute("/_authenticated/app")({
   head: () => ({ meta: [{ title: "Student Portfolios — Humankind" }] }),
@@ -223,7 +223,7 @@ function AppPage() {
         <div style={{ background:"#1e5a9c", padding:"16px 20px" }}>
           <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", gap:12 }}>
             <div style={{ display:"flex", alignItems:"center", gap:12, minWidth:0 }}>
-              <img src={logoAsset.url} alt="Humankind" style={{ height:38, width:38, borderRadius:8, background:"#fff", padding:3, objectFit:"contain", flexShrink:0 }} />
+              <img src={LOGO_URL} alt="Humankind" style={{ height:38, width:38, borderRadius:8, background:"#fff", padding:3, objectFit:"contain", flexShrink:0 }} />
               <div style={{ minWidth:0 }}>
                 <div style={{ color:"#8cc63f", fontSize:11, fontWeight:600, letterSpacing:2, textTransform:"uppercase" }}>Humankind</div>
                 <div style={{ color:"#fff", fontSize:20, fontWeight:800, marginTop:2 }}>Student Portfolios</div>
